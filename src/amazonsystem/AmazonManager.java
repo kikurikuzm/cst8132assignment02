@@ -47,4 +47,81 @@ public class AmazonManager {
 ===========================================================================
 				""");
 	}
+	
+	public void loadProductList() {
+		
+	}
+	
+	public void showProductList() {
+		
+	}
+	
+	public void searchInProducts() {
+		
+	}
+	
+	public void addCustomer() {
+		
+	}
+	
+	public void showCustomers() {
+		
+	}
+	
+	public void addCreditToCustomer() {
+		
+	}
+	
+	public void showCreditFromCustomer() {
+		
+	}
+	
+	public void addProductInWishList() {
+		
+	}
+	
+	public void removeProductFromWishList() {
+		
+	}
+	
+	public void showWishList() {
+		
+	}
+	
+	public void addProductInCart() {
+		
+	}
+	
+	public void removeProductFromCart() {
+		
+	}
+	
+	public void showProductsInCart() {
+		
+	}
+	
+	public void payCart() {
+		
+	}
+	
+	public void addCommentToProduct() {
+		
+	}
+	
+	public void showComments() {
+		
+	}
+
+	
+	public AmazonCustomer findCustomerById(int customerId) {
+		
+	}
+	
+	public AmazonProduct findProductById(int productId) {
+		
+	}
+	
+	public void exit() {
+		
+	}
 }

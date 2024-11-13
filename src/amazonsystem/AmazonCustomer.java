@@ -46,7 +46,44 @@ public class AmazonCustomer {
 		
 	}
 	
-	public void addItemInCart(AmazonCartItem) {
+	public void addItemInCart(AmazonCartItem newItem) {
 		
+	}
+	
+	public void removeProductFromCart(AmazonProduct desiredProduct) {
+		
+	}
+	
+	public void showCart() {
+		
+	}
+	
+	public void pay(AmazonCredit payment) {
+		
+	}
+	
+	public void moveFromCartToComments() {
+		
+	}
+	
+	public boolean hasProductToComment(AmazonProduct desiredProduct) {
+		return true;//placeholder
+	}
+	
+	public void addComment(AmazonComment newComment) {
+		
+	}
+	
+	public void setComment(AmazonProduct desiredProduct, String comment, float rating) {
+		
+	}
+	
+	public void showComments() {
+		
+	}
+	
+	@Override
+	public String toString() {
+		return new String();//placeholder
 	}
 }

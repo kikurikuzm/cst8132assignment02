@@ -31,7 +31,7 @@ public class AmazonCart implements AmazonPayable {
 	
 	@Override
 	public boolean pay(float amount) {
-		return false;
+		return false;//placeholder
 	}
 	
 	public void addItem(AmazonCartItem newItem) {

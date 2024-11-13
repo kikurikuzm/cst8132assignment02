@@ -12,7 +12,8 @@ public class AmazonCartItem{
 	}
 	
 	public float calcSubTotal() {
-		return 0.0f;
+		float total = product.getDiscountPrice() * quantity;
+		return total;
 	}
 	
 	@Override
