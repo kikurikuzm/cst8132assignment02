@@ -11,7 +11,7 @@ public abstract class AmazonCredit {
 	
 	@Override
 	public String toString() {
-		return new String(); //placeholder
+		return new String("Type: " + this.type + ", Amount: " + this.amount);
 	}
 	
 }

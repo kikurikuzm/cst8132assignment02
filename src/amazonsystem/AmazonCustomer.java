@@ -1,5 +1,6 @@
 package amazonsystem;
 
+import java.util.ArrayList;
 import amazonsystem.AmazonMoney.*;
 import amazonsystem.AmazonProduct.*;
 
@@ -7,6 +8,7 @@ public class AmazonCustomer {
 	private int id;
 	private String name;
 	private String address;
+	private ArrayList<AmazonCredit> credits;
 	
 	private AmazonCustomer(int newID, String newName, String newAddress) {
 		this.id = newID;
@@ -38,12 +40,22 @@ public class AmazonCustomer {
 		return id;
 	}
 	
+	public String getName() {
+		return name;
+	}
+	
+	public String getAddress() {
+		return address;
+	}
+	
 	public void addCredit(AmazonCredit newCredit) {
-		
+		this.credits.add(newCredit);
 	}
 	
 	public void showCredits() {
-		
+		for(int i = 0; i < credits.size(); i++) {
+			System.out.printf("- Credit[%i]: %s %n", i, credits.get(i).toString());
+		}
 	}
 	
 	public void addProductInWishList(AmazonProduct newProduct) {
