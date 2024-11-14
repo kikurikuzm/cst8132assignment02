@@ -1,6 +1,7 @@
 package amazonsystem;
 
 import java.util.List;
+import java.util.Scanner;
 
 import amazonsystem.AmazonProduct.*;
 import amazonsystem.AmazonMoney.*;
@@ -11,7 +12,8 @@ public class AmazonManager {
 	private List<AmazonProduct> products;
 	
 	public static void main(String[] args) {
-
+		AmazonManager manager = new AmazonManager();
+		manager.showMenu();
 	}
 	
 	public void showMenu() {
@@ -45,7 +47,7 @@ public class AmazonManager {
 ===========================================================================
 ||   [End of Application (Authors: Matthias Kuzma, Courtney Hammond)]    ||
 ===========================================================================
-				""");
+				""");//TODO remove end 'choose an option' part and put it into main/exit func
 	}
 	
 	public void loadProductList() {
@@ -61,7 +63,45 @@ public class AmazonManager {
 	}
 	
 	public void addCustomer() {
+		Scanner input = new Scanner(System.in);
+		String customerID;
+		String customerName;
+		String customerAddress;
+		String[] customerVariables = new String[3];
+		AmazonCustomer newCustomer;
 		
+		System.out.println("Enter the Customer ID: ");
+		customerID = input.next();
+		
+		System.out.println("Enter the Customer name: ");
+		customerName = input.next();
+		
+		System.out.println("Enter the Customer address: ");
+		customerAddress = input.next();
+		
+		int convertedID = Integer.valueOf(customerID);
+		
+		for(int i = 0; i < customers.size(); i++) {
+			if(customers.get(i).getID() == convertedID) {
+				System.out.println("Customer ID already exists!");
+				return;
+			}
+		}
+		
+		customerVariables[0] = customerID;
+		customerVariables[1] = customerName;
+		customerVariables[2] = customerAddress;
+		
+		newCustomer = AmazonCustomer.createAmazonCustomer(customerVariables);
+		
+		if(newCustomer == null) {
+			System.out.println("Result: Customer failed to add. Invalid parameters.");
+			return;
+		}
+		
+		customers.add(newCustomer);
+		
+		System.out.println("Result: Customer added with success!");
 	}
 	
 	public void showCustomers() {

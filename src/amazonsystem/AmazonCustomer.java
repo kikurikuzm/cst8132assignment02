@@ -14,12 +14,28 @@ public class AmazonCustomer {
 		this.address = newAddress;
 	}
 	
-	public AmazonCustomer createAmazonCustomer(String[] newCustomer) {
+	public static AmazonCustomer createAmazonCustomer(String[] newCustomer) {
+		if(AmazonUtil.isValidInt(newCustomer[0]) == false) {
+			return null;
+		}
+		
+		if(AmazonUtil.isValidString(newCustomer[1]) == false) {
+			return null;
+		}
+		
+		if(AmazonUtil.isValidString(newCustomer[2]) == false) {
+			return null;
+		}
+		
 		int newID = Integer.valueOf(newCustomer[0]);
 		String newName = newCustomer[1];
 		String newAddress = newCustomer[2];
 		
 		return new AmazonCustomer(newID, newName, newAddress);
+	}
+	
+	public int getID() {
+		return id;
 	}
 	
 	public void addCredit(AmazonCredit newCredit) {
