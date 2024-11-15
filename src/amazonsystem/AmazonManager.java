@@ -1,5 +1,6 @@
 package amazonsystem;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -125,7 +126,7 @@ public class AmazonManager {
 		System.out.println("Enter the Customer ID: ");
 		customerID = input.next();
 		
-		selectedCustomer = getCustomerIfValid(Integer.valueOf(customerID));
+		selectedCustomer = getCustomerIfValid(customerID);
 		if(selectedCustomer == null) {
 			System.out.println("Invalid Customer ID.");
 			return;
@@ -183,18 +184,19 @@ public class AmazonManager {
 		Scanner input = new Scanner(System.in);
 		String customerID;
 		AmazonCustomer selectedCustomer;
+		ArrayList<AmazonCredit> customerCredits;
 		
 		System.out.println("Enter the Customer ID:");
 		customerID = input.next();
 		
-		selectedCustomer = getCustomerIfValid(Integer.valueOf(customerID));
+		selectedCustomer = getCustomerIfValid(customerID);
 		if(selectedCustomer == null) {
 			System.out.println("Invalid Customer ID.");
 			return;
 		}
 		
 		System.out.println("[Printing Customer credit ......]");
-		selectedCustomer.showCredits();
+		customerCredits = selectedCustomer.getCredits();
 		
 	}
 	
@@ -247,9 +249,10 @@ public class AmazonManager {
 		
 	}
 	
-	public AmazonCustomer getCustomerIfValid(int customerID) {
+	public AmazonCustomer getCustomerIfValid(String customerID) {
+		int customerIDInteger = Integer.valueOf(customerID);
 		for(AmazonCustomer curCustomer: customers) {
-			if(curCustomer.getID() == customerID) {
+			if(curCustomer.getID() == customerIDInteger) {
 				return curCustomer;
 			}
 		}

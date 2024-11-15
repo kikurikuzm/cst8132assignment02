@@ -9,6 +9,7 @@ public class AmazonCustomer {
 	private String name;
 	private String address;
 	private ArrayList<AmazonCredit> credits;
+	private ArrayList<AmazonProduct> wishlist;
 	
 	private AmazonCustomer(int newID, String newName, String newAddress) {
 		this.id = newID;
@@ -52,22 +53,31 @@ public class AmazonCustomer {
 		this.credits.add(newCredit);
 	}
 	
-	public void showCredits() {
-		for(int i = 0; i < credits.size(); i++) {
-			System.out.printf("- Credit[%i]: %s %n", i, credits.get(i).toString());
-		}
+	public ArrayList<AmazonCredit> getCredits() {
+//		for(int i = 0; i < credits.size(); i++) {
+//			System.out.printf("- Credit[%i]: %s %n", i, credits.get(i).toString());
+//		}
+		return credits;
 	}
 	
 	public void addProductInWishList(AmazonProduct newProduct) {
-		
+		wishlist.add(newProduct);
 	}
 	
 	public void removeProductFromWishList(AmazonProduct desiredProduct) {
-		
+		if(isProductInWishList(desiredProduct) == false) {
+			return;
+		}
 	}
 	
 	public boolean isProductInWishList(AmazonProduct desiredProduct) {
-		return false; //placeholder
+		boolean wishlistHasItem = false;
+		
+		if(wishlist.contains(desiredProduct)) {
+			wishlistHasItem = true;
+		}
+		
+		return wishlistHasItem;
 	}
 	
 	public void showWishList() {
