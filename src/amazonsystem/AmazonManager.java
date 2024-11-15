@@ -64,30 +64,15 @@ public class AmazonManager {
 	}
 	
 	public void addCustomer() {
-		Scanner input = new Scanner(System.in);
 		String customerID;
 		String customerName;
 		String customerAddress;
 		String[] customerVariables = new String[3];
 		AmazonCustomer newCustomer;
 		
-		System.out.println("Enter the Customer ID: ");
-		customerID = input.next();
-		
-		System.out.println("Enter the Customer name: ");
-		customerName = input.next();
-		
-		System.out.println("Enter the Customer address: ");
-		customerAddress = input.next();
-		
-		int convertedID = Integer.valueOf(customerID);
-		
-		for(AmazonCustomer curCustomer: customers) {
-			if(curCustomer.getID() == convertedID) {
-				System.out.println("Customer ID already exists!");
-				return;
-			}
-		}
+		customerID = requestUserInput("Enter the Customer ID: ", "newCustomer");
+		customerName = requestUserInput("Enter the Customer Name: ", "string");
+		customerAddress = requestUserInput("Enter the Customer's Address: ", "string");
 		
 		customerVariables[0] = customerID;
 		customerVariables[1] = customerName;
@@ -96,7 +81,7 @@ public class AmazonManager {
 		newCustomer = AmazonCustomer.createAmazonCustomer(customerVariables);
 		
 		if(newCustomer == null) {
-			System.out.println("Result: Customer failed to add. Invalid parameters.");
+			System.out.println("Result: Customer failed to create. Invalid parameters.");
 			return;
 		}
 		
@@ -117,24 +102,14 @@ public class AmazonManager {
 	
 	public void addCreditToCustomer() {
 		Scanner input = new Scanner(System.in);
-		String customerID;
 		String cashType;
 		String cashValue;
 		AmazonCustomer selectedCustomer;
 		AmazonCredit newCredit;
+
+		selectedCustomer = requestCustomer();
 		
-		System.out.println("Enter the Customer ID: ");
-		customerID = input.next();
-		
-		selectedCustomer = getCustomerIfValid(customerID);
-		if(selectedCustomer == null) {
-			System.out.println("Invalid Customer ID.");
-			return;
-		}
-		
-		
-		System.out.println("Enter the Type of Credit ([1] - Cash, [2] - Check, [3] - Card): ");
-		cashType = input.next();
+		cashType = requestUserInput("Enter the Type of Credit ([1] - Cash, [2] - Check, [3] - Card): ", "int");
 		
 		int convertedCashType = Integer.valueOf(cashType);
 		
@@ -143,34 +118,25 @@ public class AmazonManager {
 			return;
 		}
 		
-		
-		System.out.println("Enter the Cash value: ");
-		cashValue = input.next();
-		
-		if(AmazonUtil.isValidFloat(cashValue) == false) {
-			System.out.println("Invalid value.");
-			return;
-		}
-		
+		cashValue = requestUserInput("Enter the cash value: ", "float");
 		
 		switch(convertedCashType) {
 			case 1:
 				newCredit = AmazonCash.createCash(cashValue);
+				break;
 			case 2:
-				System.out.println("Please provide an account number: ");
-				String newAccountNumber = input.next();
+				String newAccountNumber = requestUserInput("Please provide an account number: ", "string");
 				
 				String[] checkDetails = {cashValue, newAccountNumber};
 				newCredit = AmazonCheck.createCheck(checkDetails);
+				break;
 			case 3:
-				System.out.println("Please provide a card number: ");
-				String cardNumber = input.next();
-				
-				System.out.println("Please provide the corresponding expiration date: ");
-				String expirationDate = input.next();
+				String cardNumber = requestUserInput("Please provide a card number: ", "string");
+				String expirationDate = requestUserInput("Please provide the corresponding expiration date: ", "string");
 				
 				String[] cardDetails = {cardNumber, expirationDate, cashValue};
 				newCredit = AmazonCard.createCredit(cardDetails);
+				break;
 			default:
 				newCredit = AmazonCash.createCash("0");
 		}
@@ -186,22 +152,29 @@ public class AmazonManager {
 		AmazonCustomer selectedCustomer;
 		ArrayList<AmazonCredit> customerCredits;
 		
-		System.out.println("Enter the Customer ID:");
-		customerID = input.next();
-		
-		selectedCustomer = getCustomerIfValid(customerID);
-		if(selectedCustomer == null) {
-			System.out.println("Invalid Customer ID.");
-			return;
-		}
+		selectedCustomer = requestCustomer();
 		
 		System.out.println("[Printing Customer credit ......]");
+		
 		customerCredits = selectedCustomer.getCredits();
 		
+		for(int i = 0; i < customerCredits.size(); i++) {
+			AmazonCredit currentCredit = customerCredits.get(i);
+			System.out.printf("%n- Credit[%i]: %s", currentCredit.toString());
+		}
 	}
 	
 	public void addProductInWishList() {
+		AmazonCustomer selectedCustomer;
+		AmazonProduct desiredProduct;
 		
+		selectedCustomer = requestCustomer();
+		
+		desiredProduct = getProductIfValid(requestUserInput("Enter the Product ID to include in the Wishlist: ", "int"));
+		
+		selectedCustomer.addProductInWishList(desiredProduct);
+		
+		System.out.printf("%nAdded %s into %s's wishlist.", desiredProduct.getName(), selectedCustomer.getName());
 	}
 	
 	public void removeProductFromWishList() {
@@ -237,11 +210,22 @@ public class AmazonManager {
 	}
 
 	
-	public AmazonCustomer findCustomerById(int customerId) {
-		
+	public AmazonCustomer findCustomerById(int customerID) {
+		for(AmazonCustomer curCustomer: customers) {
+			if(curCustomer.getID() == customerID) {
+				return curCustomer;
+			}
+		}
+		return null;
 	}
 	
-	public AmazonProduct findProductById(int productId) {
+	public AmazonProduct findProductById(int productID) {
+		for(AmazonProduct curProduct: products) {
+			if(curProduct.getID() == productID) {
+				return curProduct;
+			}
+		}
+		return null;
 		
 	}
 	
@@ -249,7 +233,7 @@ public class AmazonManager {
 		
 	}
 	
-	public AmazonCustomer getCustomerIfValid(String customerID) {
+	public AmazonCustomer getCustomerIfValid(String customerID) {//returns customer instance if valid, otherwise returns null
 		int customerIDInteger = Integer.valueOf(customerID);
 		for(AmazonCustomer curCustomer: customers) {
 			if(curCustomer.getID() == customerIDInteger) {
@@ -258,5 +242,79 @@ public class AmazonManager {
 		}
 		
 		return null;
+	}
+	
+	public AmazonProduct getProductIfValid(String productID) {
+		int productIDInteger = Integer.valueOf(productID);
+		for(AmazonProduct curProduct: products) {
+			if(curProduct.getID() == productIDInteger) {
+				return curProduct;
+			}
+		}
+		
+		return null;
+	}
+	
+	public String requestUserInput(String question, String inputType) {//requests user input and desired type, and provides the response if it passes error checking
+		boolean responseInvalid = true;
+		Scanner input = new Scanner(System.in);
+		String userResponse = "";
+		
+		while(responseInvalid == true) {
+			
+			System.out.println(question);
+			userResponse = input.next();
+			
+			if(userResponse.equalsIgnoreCase("quit") || userResponse.equalsIgnoreCase("exit")) {
+				responseInvalid = false;
+				System.out.println("Returning to menu...");
+			}
+			
+			switch(inputType) { //error checking
+				case("customer"):
+					if(getCustomerIfValid(userResponse) != null) {
+						responseInvalid = false;
+					} else {
+						System.out.println("Customer ID does not exist.");
+					}
+					break;
+				case("newCustomer"):
+					if(getCustomerIfValid(userResponse) == null) {
+						responseInvalid = false;
+					} else {
+						System.out.println("Customer ID already exists.");
+					}
+				case("int"):
+					if(AmazonUtil.isValidInt(userResponse) == true) {
+						responseInvalid = false;
+					} else {
+						System.out.println("Invalid integer.");
+					}
+					break;
+				case("string"):
+					if(AmazonUtil.isValidString(userResponse) == true) {
+						responseInvalid = false;
+					} else {
+						System.out.println("Invalid string.");
+					}
+					break;
+				case("float"):
+					if(AmazonUtil.isValidFloat(userResponse) == true) {
+						responseInvalid = false;
+					} else {
+						System.out.println("Invalid float.");
+					}
+					break;
+				default:
+					System.out.println("Invalid input type requested.");
+					return null;
+			}
+		}
+		
+		return userResponse;
+	}
+	
+	public AmazonCustomer requestCustomer() {
+		return getCustomerIfValid(requestUserInput("Enter the Customer ID: ", "customer"));
 	}
 }
