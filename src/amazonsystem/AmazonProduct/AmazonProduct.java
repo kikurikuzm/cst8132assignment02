@@ -29,7 +29,7 @@ String imageURL, String link, float rating, int numberOfRatings, float discountP
 		this.actualPrice = actualPrice;
 	}
 
-	AmazonProduct(String[] productVariables) {
+	public AmazonProduct(String[] productVariables) {
 		this.variableArray = productVariables;
 		this.id = Integer.parseInt(productVariables[0]);
 		this.name = productVariables[1];
