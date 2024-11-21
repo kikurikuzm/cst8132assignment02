@@ -24,17 +24,21 @@ public class AmazonCustomer {
 		this.cart = new AmazonCart();
 	}
 	
-	public static AmazonCustomer createAmazonCustomer(String[] newCustomer) {
+	public static AmazonCustomer createAmazonCustomer(String[] newCustomer) throws AmazonException{
+		if(newCustomer.length != 3) {
+			throw new AmazonException("Invalid length of String list. Should have only three indices.");
+		}
+		
 		if(AmazonUtil.isValidInt(newCustomer[0]) == false) {
-			return null;
+			throw new AmazonException("Invalid int given for ID.");
 		}
 		
 		if(AmazonUtil.isValidString(newCustomer[1]) == false) {
-			return null;
+			throw new AmazonException("Invalid sting given for name.");
 		}
 		
 		if(AmazonUtil.isValidString(newCustomer[2]) == false) {
-			return null;
+			throw new AmazonException("Invalid string given for address.");
 		}
 		
 		int newID = Integer.valueOf(newCustomer[0]);
@@ -56,10 +60,6 @@ public class AmazonCustomer {
 		return address;
 	}
 	
-	public void addCredit(AmazonCredit newCredit) {
-		this.credits.add(newCredit);
-	}
-	
 	public ArrayList<AmazonCredit> getCredits() {
 //		for(int i = 0; i < credits.size(); i++) {
 //			System.out.printf("- Credit[%i]: %s %n", i, credits.get(i).toString());
@@ -67,13 +67,17 @@ public class AmazonCustomer {
 		return credits;
 	}
 	
+	public void addCredit(AmazonCredit newCredit) {
+		this.credits.add(newCredit);
+	}
+	
 	public void addProductInWishList(AmazonProduct newProduct) {
 		wishlist.add(newProduct);
 	}
 	
-	public void removeProductFromWishList(AmazonProduct desiredProduct) {
+	public void removeProductFromWishList(AmazonProduct desiredProduct) throws AmazonException{
 		if(isProductInWishList(desiredProduct) == false) {
-			return;
+			throw new AmazonException("Product not found in wishlist.");
 		}
 		
 		for(int i = 0; i < wishlist.size(); i++) {
@@ -112,8 +116,12 @@ public class AmazonCustomer {
 		cart.addItem(newItem);
 	}
 	
-	public void removeProductFromCart(AmazonProduct desiredProduct) {
-		cart.removeItem(desiredProduct);
+	public void removeProductFromCart(AmazonProduct desiredProduct) throws AmazonException {
+		try {
+			cart.removeItem(desiredProduct);
+		} catch (AmazonException e) {
+			throw new AmazonException(e.getMessage());
+		}
 	}
 	
 	public void showCart() {
@@ -132,11 +140,11 @@ public class AmazonCustomer {
 		return cart.hasItem(desiredProduct);
 	}
 	
-	public void addComment(AmazonComment newComment) {
+	public void addComment(AmazonComment newComment) throws AmazonException {
 		comments.add(newComment);
 	}
 	
-	public void setComment(AmazonProduct desiredProduct, String comment, float rating) {
+	public void setComment(AmazonProduct desiredProduct, String comment, float rating) throws AmazonException{
 		//TODO change customer's comment and rating about desiredProduct to comment and rating
 	}
 	

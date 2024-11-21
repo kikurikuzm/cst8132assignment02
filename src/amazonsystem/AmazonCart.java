@@ -32,12 +32,13 @@ public class AmazonCart implements AmazonPayable {
 		return orderValue;
 	}
 	
-	public AmazonCartItem getItem(int itemIndex) {
-		try {
+	public AmazonCartItem getItem(int itemIndex) throws AmazonException{
+		if(itemIndex > items.size() || itemIndex < 0) {
+			throw new AmazonException("Item not found in cart.");
+		} else {
 			return items.get(itemIndex);
-		} catch (IndexOutOfBoundsException e) {
-			return null;
 		}
+
 	}
 	
 	public boolean hasItem(AmazonProduct desiredItem) {
@@ -63,12 +64,15 @@ public class AmazonCart implements AmazonPayable {
 		items.add(newItem);
 	}
 	
-	public void removeItem(AmazonProduct desiredItem) {
+	public void removeItem(AmazonProduct desiredItem) throws AmazonException{
 		for(int i = 0; i < items.size(); i++) {
 			if(items.get(i).getItem().equals(desiredItem)) {
 				items.remove(i);
+				return;
 			}
 		}
+		
+		throw new AmazonException("Item not found.");
 	}
 	
 	public String[] listItems() {

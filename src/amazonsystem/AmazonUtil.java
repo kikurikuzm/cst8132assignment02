@@ -118,7 +118,12 @@ public class AmazonUtil {
 	}
 	
 	public static boolean isValidInt(String checkingInt) {
-		int convertedInt = Integer.valueOf(checkingInt);
+		int convertedInt;
+		try {
+			convertedInt = Integer.valueOf(checkingInt);
+		} catch (NumberFormatException e) {
+			return false;
+		}
 		
 		if(convertedInt >= 0) {
 			return true;

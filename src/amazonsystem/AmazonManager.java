@@ -7,14 +7,18 @@ import java.util.Scanner;
 import amazonsystem.AmazonProduct.*;
 import amazonsystem.AmazonMoney.*;
 
-public class AmazonManager {
+public class AmazonManager {//could be a singleton
 	
-	private List<AmazonCustomer> customers;
-	private List<AmazonProduct> products;
+	private List<AmazonCustomer> customers = new ArrayList<AmazonCustomer>();
+	private List<AmazonProduct> products = new ArrayList<AmazonProduct>();
+	private boolean keepRunning = true;
 	
 	public static void main(String[] args) {
 		AmazonManager manager = new AmazonManager();
-		manager.showMenu();
+		while (manager.keepRunning == true) {
+			manager.showMenu();
+			manager.requestUserCommand();
+		}
 	}
 	
 	public void showMenu() {
@@ -43,11 +47,7 @@ public class AmazonManager {
 ||                                  || Comment options ................. ||
 || ................................ || [O] Comment products bought       ||
 ||            [Q] Exit              || [P] List comments from products   ||
-===========================================================================
-                            Choose an option: Q                           
-===========================================================================
-||   [End of Application (Authors: Matthias Kuzma, Courtney Hammond)]    ||
-===========================================================================
+===========================================================================                       
 				""");//TODO remove end 'choose an option' part and put it into main/exit func
 	}
 	
@@ -70,7 +70,7 @@ public class AmazonManager {
 		String[] customerVariables = new String[3];
 		AmazonCustomer newCustomer;
 		
-		customerID = requestUserInput("Enter the Customer ID: ", "newCustomer");
+		customerID = requestUserInput("Enter the Customer ID: ", "int");
 		customerName = requestUserInput("Enter the Customer Name: ", "string");
 		customerAddress = requestUserInput("Enter the Customer's Address: ", "string");
 		
@@ -78,9 +78,10 @@ public class AmazonManager {
 		customerVariables[1] = customerName;
 		customerVariables[2] = customerAddress;
 		
-		newCustomer = AmazonCustomer.createAmazonCustomer(customerVariables);
-		
-		if(newCustomer == null) {
+		try {
+			newCustomer = AmazonCustomer.createAmazonCustomer(customerVariables);
+		} catch (AmazonException e) {
+			System.out.println(e);
 			System.out.println("Result: Customer failed to create. Invalid parameters.");
 			return;
 		}
@@ -193,7 +194,11 @@ public class AmazonManager {
 		
 		productToRemove = getProductIfValid(requestUserInput("Enter the Product ID to remove from the wishlist: ", "int"));
 		
-		selectedCustomer.removeProductFromWishList(productToRemove); //TODO need to do proper error checking and handling
+		try {
+			selectedCustomer.removeProductFromWishList(productToRemove);
+		} catch (AmazonException e) {
+			System.out.println(e);
+		}
 		
 		System.out.printf("Removed %s from %s's wishlist.%n", productToRemove.getName(), selectedCustomer.getName());
 	}
@@ -257,10 +262,19 @@ public class AmazonManager {
 	}
 	
 	public void exit() {
-		
+		System.out.println("""
+===========================================================================
+||   [End of Application (Authors: Matthias Kuzma, Courtney Hammond)]    ||
+===========================================================================
+				""");
+		keepRunning = false;
 	}
 	
 	public AmazonCustomer getCustomerIfValid(String customerID) {//returns customer instance if valid, otherwise returns null
+		if(AmazonUtil.isValidInt(customerID) != true) {
+			return null;
+		}
+		
 		int customerIDInteger = Integer.valueOf(customerID);
 		for(AmazonCustomer curCustomer: customers) {
 			if(curCustomer.getID() == customerIDInteger) {
@@ -272,6 +286,10 @@ public class AmazonManager {
 	}
 	
 	public AmazonProduct getProductIfValid(String productID) {
+		if(AmazonUtil.isValidInt(productID) != true) {
+			return null;
+		}
+		
 		int productIDInteger = Integer.valueOf(productID);
 		for(AmazonProduct curProduct: products) {
 			if(curProduct.getID() == productIDInteger) {
@@ -344,5 +362,66 @@ public class AmazonManager {
 	
 	public AmazonCustomer requestCustomer() {
 		return getCustomerIfValid(requestUserInput("Enter the Customer ID: ", "customer"));
+	}
+	
+	public void requestUserCommand() {
+		Scanner input = new Scanner(System.in);
+		String userOption;
+		
+		System.out.println("Choose an option: ");
+		userOption = input.next();
+		
+		userOption = userOption.toLowerCase();
+		
+		switch(userOption) {
+			case("a"):
+				loadProductList();
+				break;
+			case("b"):
+				showProductList();
+				break;
+			case("c"):
+				searchInProducts();
+				break;			
+			case("d"):
+				addCustomer();
+				break;
+			case("e"):
+				showCustomers();
+				break;
+			case("f"):
+				addCreditToCustomer();
+				break;
+			case("g"):
+				showCreditFromCustomer();
+				break;
+			case("h"):
+				addProductInWishList();
+				break;
+			case("i"):
+				removeProductFromWishList();
+				break;
+			case("j"):
+				showWishList();
+				break;
+			case("k"):
+				addProductInCart();
+				break;
+			case("l"):
+				removeProductFromCart();
+				break;
+			case("m"):
+				showProductsInCart();
+				break;
+			case("n"):
+				//buyProductsInCart();
+				break;
+			case("o"):
+				addCommentToProduct();
+				break;
+			case("p"):
+				showComments();
+				break;
+		}
 	}
 }
