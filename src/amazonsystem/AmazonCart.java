@@ -12,42 +12,93 @@ public class AmazonCart implements AmazonPayable {
 	private ArrayList<AmazonCartItem> items;
 	private float orderValue;
 	
+	public AmazonCart() {
+		this.date = new Date();
+		this.items = new ArrayList<AmazonCartItem>();
+	}
+	
 	public AmazonCart(AmazonCustomer customer, Date date) {
 		this.customer = customer;
 		this.date = date;
 	}
 	
 	public float calcSubTotal() {
-		return 0.0f;
+		orderValue = 0.0f;
+		
+		for(AmazonCartItem curItem: items) {
+			orderValue += curItem.calcSubTotal();
+		}
+		
+		return orderValue;
 	}
 	
 	public AmazonCartItem getItem(int itemIndex) {
-		
+		try {
+			return items.get(itemIndex);
+		} catch (IndexOutOfBoundsException e) {
+			return null;
+		}
 	}
 	
 	public boolean hasItem(AmazonProduct desiredItem) {
+		for(int i = 0; i < items.size(); i++) {
+			if(items.get(i).getItem().equals(desiredItem)) {
+				return true;
+			}
+		}
 		
+		return false;
 	}
 	
 	@Override
 	public boolean pay(float amount) {
-		return false;//placeholder
+		if(amount >= orderValue) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public void addItem(AmazonCartItem newItem) {
-		
+		items.add(newItem);
 	}
 	
 	public void removeItem(AmazonProduct desiredItem) {
+		for(int i = 0; i < items.size(); i++) {
+			if(items.get(i).getItem().equals(desiredItem)) {
+				items.remove(i);
+			}
+		}
+	}
+	
+	public String[] listItems() {
+		ArrayList<String> itemStrings = new ArrayList<String>();
+		String[] returnString;
 		
+		for(AmazonCartItem curCartItem: items) {
+			itemStrings.add(curCartItem.toString());
+		}
+		
+		returnString = new String[itemStrings.size()];
+		
+		for(int i = 0; i < itemStrings.size(); i++) {
+			returnString[i] = itemStrings.get(i);
+		}
+		
+		return returnString;
 	}
 	
 	public String getCartDetails() {
+		String cartDetails;
 		
+		cartDetails = String.format("This cart contains %i items, has a sub-total of $%.1f, and was created on %s.", items.size(), this.calcSubTotal(), date.getDate());
+		
+		//TODO "This cart contains %i items, has a sub-total of %f, and was created on %s (date)."
+		return new String();
 	}
 	
 	@Override
 	public String toString() {
-		
+		return new String();
 	}
 }

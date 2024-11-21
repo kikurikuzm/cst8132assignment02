@@ -10,11 +10,18 @@ public class AmazonCustomer {
 	private String address;
 	private ArrayList<AmazonCredit> credits;
 	private ArrayList<AmazonProduct> wishlist;
+	private ArrayList<AmazonComment> comments;
+	private AmazonCart cart;
 	
 	private AmazonCustomer(int newID, String newName, String newAddress) {
 		this.id = newID;
 		this.name = newName;
 		this.address = newAddress;
+		
+		this.credits = new ArrayList<AmazonCredit>();
+		this.wishlist = new ArrayList<AmazonProduct>();
+		this.comments= new ArrayList<AmazonComment>();
+		this.cart = new AmazonCart();
 	}
 	
 	public static AmazonCustomer createAmazonCustomer(String[] newCustomer) {
@@ -68,6 +75,13 @@ public class AmazonCustomer {
 		if(isProductInWishList(desiredProduct) == false) {
 			return;
 		}
+		
+		for(int i = 0; i < wishlist.size(); i++) {
+			if(wishlist.get(i).equals(desiredProduct)) {
+				wishlist.remove(i);
+				break;
+			}
+		}
 	}
 	
 	public boolean isProductInWishList(AmazonProduct desiredProduct) {
@@ -80,44 +94,54 @@ public class AmazonCustomer {
 		return wishlistHasItem;
 	}
 	
-	public void showWishList() {
+	public ArrayList<String> showWishList() {
+		ArrayList<String> wishlistItems = new ArrayList<String>();
 		
+		for(AmazonProduct curProduct: wishlist) {
+			String newItem;
+			
+			newItem = new String("- ID: " + curProduct.getID() + ", Name: " + curProduct.getName());
+			
+			wishlistItems.add(newItem);
+		}
+		
+		return wishlistItems;
 	}
 	
 	public void addItemInCart(AmazonCartItem newItem) {
-		
+		cart.addItem(newItem);
 	}
 	
 	public void removeProductFromCart(AmazonProduct desiredProduct) {
-		
+		cart.removeItem(desiredProduct);
 	}
 	
 	public void showCart() {
-		
+		cart.listItems();
 	}
 	
 	public void pay(AmazonCredit payment) {
-		
+		//TODO how should credits be handled?
 	}
 	
 	public void moveFromCartToComments() {
-		
+		//TODO idk
 	}
 	
 	public boolean hasProductToComment(AmazonProduct desiredProduct) {
-		return true;//placeholder
+		return cart.hasItem(desiredProduct);
 	}
 	
 	public void addComment(AmazonComment newComment) {
-		
+		comments.add(newComment);
 	}
 	
 	public void setComment(AmazonProduct desiredProduct, String comment, float rating) {
-		
+		//TODO change customer's comment and rating about desiredProduct to comment and rating
 	}
 	
 	public void showComments() {
-		
+		//TODO list all comments
 	}
 	
 	@Override

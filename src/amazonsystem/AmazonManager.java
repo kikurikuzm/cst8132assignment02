@@ -178,11 +178,38 @@ public class AmazonManager {
 	}
 	
 	public void removeProductFromWishList() {
+		AmazonCustomer selectedCustomer;
+		ArrayList<String> customerWishlist;
+		AmazonProduct productToRemove;
 		
+		selectedCustomer = requestCustomer();
+		
+		customerWishlist = selectedCustomer.showWishList();
+		
+		System.out.printf("Wishlist of customer %s contains: %n");
+		for(String wishlistProd: customerWishlist) {
+			System.out.println(wishlistProd);
+		}
+		
+		productToRemove = getProductIfValid(requestUserInput("Enter the Product ID to remove from the wishlist: ", "int"));
+		
+		selectedCustomer.removeProductFromWishList(productToRemove); //TODO need to do proper error checking and handling
+		
+		System.out.printf("Removed %s from %s's wishlist.%n", productToRemove.getName(), selectedCustomer.getName());
 	}
 	
 	public void showWishList() {
+		AmazonCustomer selectedCustomer;
+		ArrayList<String> customerWishlist;
 		
+		selectedCustomer = requestCustomer();
+		
+		customerWishlist = selectedCustomer.showWishList();
+		
+		System.out.printf("Wishlist of customer %s contains: %n");
+		for(String wishlistProd: customerWishlist) {
+			System.out.println(wishlistProd);
+		}
 	}
 	
 	public void addProductInCart() {
@@ -268,6 +295,7 @@ public class AmazonManager {
 			if(userResponse.equalsIgnoreCase("quit") || userResponse.equalsIgnoreCase("exit")) {
 				responseInvalid = false;
 				System.out.println("Returning to menu...");
+				//need to figure out how to actually exit function and return to menu
 			}
 			
 			switch(inputType) { //error checking

@@ -11,6 +11,10 @@ public class AmazonCartItem{
 		this.quantity = newQuantity;
 	}
 	
+	public AmazonProduct getItem() {
+		return product;
+	}
+	
 	public float calcSubTotal() {
 		float total = product.getActualPrice() * quantity;
 		return total;
@@ -18,6 +22,9 @@ public class AmazonCartItem{
 	
 	@Override
 	public String toString() {
-		return new String();
+		String returnString;
+		
+		returnString = quantity + " of " + product.getName();
+		return returnString;
 	}
 }
