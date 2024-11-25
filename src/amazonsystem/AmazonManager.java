@@ -48,7 +48,7 @@ public class AmazonManager {//could be a singleton
 || ................................ || [O] Comment products bought       ||
 ||            [Q] Exit              || [P] List comments from products   ||
 ===========================================================================                       
-				""");//TODO remove end 'choose an option' part and put it into main/exit func
+				""");
 	}
 	
 	public void loadProductList() {
@@ -218,7 +218,18 @@ public class AmazonManager {//could be a singleton
 	}
 	
 	public void addProductInCart() {
+		AmazonCustomer selectedCustomer;
+		AmazonProduct desiredProduct;
+		String productQuantity;
 		
+		selectedCustomer = requestCustomer();
+		
+		desiredProduct = getProductIfValid(requestUserInput("Enter the desired product ID: ", "product"));
+		productQuantity = requestUserInput("Enter the desired quantity of product to add: ", "int");
+		
+		selectedCustomer.addItemInCart(desiredProduct, Integer.valueOf(productQuantity));
+		
+		System.out.printf("Added %s %s to %s's cart.", productQuantity, desiredProduct.getName(), selectedCustomer.getName());
 	}
 	
 	public void removeProductFromCart() {
@@ -315,8 +326,13 @@ public class AmazonManager {//could be a singleton
 				System.out.println("Returning to menu...");
 				//need to figure out how to actually exit function and return to menu
 			}
-			
 			switch(inputType) { //error checking
+				case("product"):
+					if(getProductIfValid(userResponse) != null) {
+						responseInvalid = false;
+					} else {
+						System.out.println("Product ID invalid.");
+					}
 				case("customer"):
 					if(getCustomerIfValid(userResponse) != null) {
 						responseInvalid = false;

@@ -116,6 +116,12 @@ public class AmazonCustomer {
 		cart.addItem(newItem);
 	}
 	
+	public void addItemInCart(AmazonProduct newItem, int quantity) {
+		AmazonCartItem newCartItem = new AmazonCartItem(newItem, 1);
+		
+		cart.addItem(newCartItem);
+	}
+	
 	public void removeProductFromCart(AmazonProduct desiredProduct) throws AmazonException {
 		try {
 			cart.removeItem(desiredProduct);
