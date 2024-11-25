@@ -52,15 +52,40 @@ public class AmazonManager {//could be a singleton
 	}
 	
 	public void loadProductList() {
+		String fileName = "";
 		
+		fileName = requestUserInput("Enter name of file to load", "string");
+		
+		try {
+			if (fileName == "") {
+				AmazonProductList.createList("backpacks.csv");
+			} else {
+				AmazonProductList.createList(fileName);
+			}
+		} catch (AmazonException e) {
+			System.out.println("List loading failed!");
+		}
 	}
 	
 	public void showProductList() {
+		System.out.println("PRODUCT LIST ......");
 		
+		for (AmazonProduct i: products) {
+			System.out.println(i);
+		}
+		System.out.println("...................");
 	}
 	
 	public void searchInProducts() {
+		String stringQuery = "";
 		
+		stringQuery = requestUserInput("Enter search query:","string");
+		
+		try {
+			AmazonProductList.search(stringQuery);
+			} catch (AmazonException e) {
+			System.out.println("List search failed!");
+		}
 	}
 	
 	public void addCustomer() {
