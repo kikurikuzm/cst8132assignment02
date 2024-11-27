@@ -130,8 +130,12 @@ public class AmazonCustomer {
 		}
 	}
 	
-	public void showCart() {
+	public void showCart() { //outputs cart items
 		cart.listItems();
+	}
+	
+	public ArrayList<AmazonProduct> getCart() { //returns cart items as amazonProduct
+		return cart.getItems();
 	}
 	
 	public void pay(AmazonCredit payment) {

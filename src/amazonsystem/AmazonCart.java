@@ -92,6 +92,16 @@ public class AmazonCart implements AmazonPayable {
 		return returnString;
 	}
 	
+	public ArrayList<AmazonProduct> getItems() { 
+		ArrayList<AmazonProduct> productList = new ArrayList<AmazonProduct>();
+		
+		for(AmazonCartItem curCartItem: items) {
+			productList.add(curCartItem.getItem());
+		}
+		
+		return productList;
+	}
+	
 	public String getCartDetails() {
 		String cartDetails;
 		

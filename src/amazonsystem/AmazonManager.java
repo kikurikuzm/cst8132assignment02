@@ -18,6 +18,7 @@ public class AmazonManager {
 		while (manager.keepRunning == true) {
 			manager.showMenu();
 			manager.requestUserCommand();
+			manager.awaitCustomerContinue();
 		}
 	}
 	
@@ -54,16 +55,16 @@ public class AmazonManager {
 	public void loadProductList() {
 		String fileName = "";
 		
-		fileName = requestUserInput("Enter name of file to load", "string");
+		fileName = requestUserInput("Enter name of file to load (\"default\" = default file): ", "string");
 		
 		try {
-			if (fileName == "") {
-				products = AmazonProductList.createList("backpacks.csv");
+			if (fileName.equals("default")||fileName.equals("d")) { // can't accept no chars for default because it wouldn't be considered a valid string
+				products = AmazonProductList.createList("Sample-Amazon-Products-v2.csv");
+				System.out.println("Loaded default list successfully.");
 			} else {
 				products = AmazonProductList.createList(fileName);
+				System.out.printf("Loaded list \"%s\" successfully.", fileName);
 			}
-			
-			System.out.println("Loaded list successfully.");
 		} catch (AmazonException e) {
 			System.out.println("List loading failed!");
 		}
@@ -205,7 +206,7 @@ public class AmazonManager {
 		
 		selectedCustomer.addProductInWishList(desiredProduct);
 		
-		System.out.printf("Added %s into %s's wishlist.%n", desiredProduct.getName(), selectedCustomer.getName());
+		System.out.printf("Added \"%s...\" into %s's wishlist.%n", desiredProduct.getName().substring(0, 25), selectedCustomer.getName());
 	}
 	
 	public void removeProductFromWishList() {
@@ -217,7 +218,7 @@ public class AmazonManager {
 		
 		customerWishlist = selectedCustomer.showWishList();
 		
-		System.out.printf("Wishlist of customer %s contains: %n");
+		System.out.printf("Wishlist of customer %s contains: %n", selectedCustomer.getName());
 		for(String wishlistProd: customerWishlist) {
 			System.out.println(wishlistProd);
 		}
@@ -230,7 +231,7 @@ public class AmazonManager {
 			System.out.println(e);
 		}
 		
-		System.out.printf("Removed %s from %s's wishlist.", productToRemove.getName(), selectedCustomer.getName());
+		System.out.printf("Removed \"%s...\" from %s's wishlist.", productToRemove.getName().substring(0,25), selectedCustomer.getName());
 	}
 	
 	public void showWishList() {
@@ -259,11 +260,32 @@ public class AmazonManager {
 		
 		selectedCustomer.addItemInCart(desiredProduct, Integer.valueOf(productQuantity));
 		
-		System.out.printf("Added %s %s to %s's cart.", productQuantity, desiredProduct.getName(), selectedCustomer.getName());
+		System.out.printf("Added %s \"%s...\" to %s's cart.%n", productQuantity, desiredProduct.getName().substring(0, 25), selectedCustomer.getName());
 	}
 	
 	public void removeProductFromCart() {
+		AmazonCustomer selectedCustomer;
+		ArrayList<AmazonProduct> customerCart;
+		AmazonProduct productToRemove;
 		
+		selectedCustomer = requestCustomer();
+		
+		customerCart = selectedCustomer.getCart();
+		
+		System.out.printf("Cart of customer %s contains: %n", selectedCustomer.getName());
+		for(AmazonProduct curCartItem: customerCart) {
+			System.out.println(curCartItem.toString());
+		}
+		
+		productToRemove = getProductIfValid(requestUserInput("Enter the ID of the product to remove: ", "int"));
+		
+		try {
+			selectedCustomer.removeProductFromCart(productToRemove);
+		} catch (AmazonException e) {
+			System.out.println(e);
+		}
+		
+		System.out.printf("Removed \"%s...\" from %s's cart.%n", productToRemove.getName().substring(0, 25), selectedCustomer.getName());
 	}
 	
 	public void showProductsInCart() {
@@ -363,6 +385,7 @@ public class AmazonManager {
 					} else {
 						System.out.println("Product ID invalid.");
 					}
+					break;
 				case("customer"):
 					if(getCustomerIfValid(userResponse) != null) {
 						responseInvalid = false;
@@ -376,6 +399,7 @@ public class AmazonManager {
 					} else {
 						System.out.println("Customer ID already exists.");
 					}
+					break;
 				case("int"):
 					if(AmazonUtil.isValidInt(userResponse) == true) {
 						responseInvalid = false;
@@ -469,5 +493,12 @@ public class AmazonManager {
 				showComments();
 				break;
 		}
+	}
+	
+	public void awaitCustomerContinue() {
+		Scanner input = new Scanner(System.in);
+		System.out.println("Press enter to continue...");
+		
+		input.nextLine();
 	}
 }
