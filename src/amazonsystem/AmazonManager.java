@@ -7,7 +7,7 @@ import java.util.Scanner;
 import amazonsystem.AmazonProduct.*;
 import amazonsystem.AmazonMoney.*;
 
-public class AmazonManager {//could be a singleton
+public class AmazonManager {
 	
 	private List<AmazonCustomer> customers = new ArrayList<AmazonCustomer>();
 	private List<AmazonProduct> products = new ArrayList<AmazonProduct>();
@@ -25,13 +25,13 @@ public class AmazonManager {//could be a singleton
 		System.out.println("""
 ===========================================================================
 ||   ****    ****           ****    ****   *****       ALGONQUIN COLLEGE ||
-||  **  ** 	**       **    **  **  **  **  **  **    COURSE: OOP/CST8152 ||
+||  **  **  **       **    **  **  **  **  **  **    COURSE: OOP/CST8152 ||
 ||  ******  **       **    **  **  **  **  *****         PROF: PAULO     ||
 ||  **  **   ****           ****    ****   **          TERM: FALL / 2024 ||
 ===========================================================================
 ||                       [Menu A2 - Amazon Manager]                      ||
 ===========================================================================
-||									|| USER                              ||
+||                                  || USER                              ||
 ||                                  || Credit options .................. ||
 || ADMIN                            || [F] Add credit to customer        ||
 ||                                  || [G] Show credits from customer    ||
@@ -48,7 +48,7 @@ public class AmazonManager {//could be a singleton
 || ................................ || [O] Comment products bought       ||
 ||            [Q] Exit              || [P] List comments from products   ||
 ===========================================================================                       
-				""");
+""");
 	}
 	
 	public void loadProductList() {
@@ -58,16 +58,23 @@ public class AmazonManager {//could be a singleton
 		
 		try {
 			if (fileName == "") {
-				AmazonProductList.createList("backpacks.csv");
+				products = AmazonProductList.createList("backpacks.csv");
 			} else {
-				AmazonProductList.createList(fileName);
+				products = AmazonProductList.createList(fileName);
 			}
+			
+			System.out.println("Loaded list successfully.");
 		} catch (AmazonException e) {
 			System.out.println("List loading failed!");
 		}
 	}
 	
 	public void showProductList() {
+		if(products.isEmpty()) {
+			System.out.println("No product list loaded!");
+			return;
+		}
+		
 		System.out.println("PRODUCT LIST ......");
 		
 		for (AmazonProduct i: products) {
@@ -127,7 +134,6 @@ public class AmazonManager {//could be a singleton
 	}
 	
 	public void addCreditToCustomer() {
-		Scanner input = new Scanner(System.in);
 		String cashType;
 		String cashValue;
 		AmazonCustomer selectedCustomer;
@@ -173,7 +179,6 @@ public class AmazonManager {//could be a singleton
 	}
 	
 	public void showCreditFromCustomer() {
-		Scanner input = new Scanner(System.in);
 		String customerID;
 		AmazonCustomer selectedCustomer;
 		ArrayList<AmazonCredit> customerCredits;
@@ -200,7 +205,7 @@ public class AmazonManager {//could be a singleton
 		
 		selectedCustomer.addProductInWishList(desiredProduct);
 		
-		System.out.printf("%nAdded %s into %s's wishlist.", desiredProduct.getName(), selectedCustomer.getName());
+		System.out.printf("Added %s into %s's wishlist.%n", desiredProduct.getName(), selectedCustomer.getName());
 	}
 	
 	public void removeProductFromWishList() {
@@ -225,7 +230,7 @@ public class AmazonManager {//could be a singleton
 			System.out.println(e);
 		}
 		
-		System.out.printf("Removed %s from %s's wishlist.%n", productToRemove.getName(), selectedCustomer.getName());
+		System.out.printf("Removed %s from %s's wishlist.", productToRemove.getName(), selectedCustomer.getName());
 	}
 	
 	public void showWishList() {
@@ -236,7 +241,7 @@ public class AmazonManager {//could be a singleton
 		
 		customerWishlist = selectedCustomer.showWishList();
 		
-		System.out.printf("Wishlist of customer %s contains: %n");
+		System.out.printf("Wishlist of customer %s contains: %n", selectedCustomer.getName());
 		for(String wishlistProd: customerWishlist) {
 			System.out.println(wishlistProd);
 		}
@@ -344,7 +349,7 @@ public class AmazonManager {//could be a singleton
 		while(responseInvalid == true) {
 			
 			System.out.println(question);
-			userResponse = input.next();
+			userResponse = input.nextLine();
 			
 			if(userResponse.equalsIgnoreCase("quit") || userResponse.equalsIgnoreCase("exit")) {
 				responseInvalid = false;

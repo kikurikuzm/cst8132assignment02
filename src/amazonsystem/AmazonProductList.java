@@ -16,7 +16,8 @@ public class AmazonProductList {
 	private final ArrayList<String> DEFAULT_TITLE = new ArrayList<>(Arrays.asList("id","name","category","sub_category","image_url","link","rating","no_ratings","discount_price","actual_price"));
 	private static ArrayList<AmazonProduct> myArrayList = new ArrayList<AmazonProduct>();
 
-	public static void createList(String CSVFileName) throws AmazonException {
+	public static ArrayList<AmazonProduct> createList(String CSVFileName) throws AmazonException {
+		myArrayList = new ArrayList<AmazonProduct>();
 		int productQuantity = 0;
 
 		File file = new File(CSVFileName);
@@ -34,6 +35,7 @@ public class AmazonProductList {
 			throw new AmazonException("Product list creation error!"); // disaster strikes
 		}
 		
+		return myArrayList;
 	}
 
 	public void saveList(String newFileName) throws AmazonException { // save product list to file
