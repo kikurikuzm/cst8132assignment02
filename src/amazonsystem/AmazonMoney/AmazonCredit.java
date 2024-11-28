@@ -14,7 +14,7 @@ public abstract class AmazonCredit {
 	}
 	
 	public void setAmount (float setValue) {
-		
+		this.amount = setValue;
 	}
 			
 	@Override
