@@ -300,12 +300,18 @@ public class AmazonManager {
 		
 		System.out.printf("Cart of customer %s contains: %n", selectedCustomer.getName());
 		for(AmazonProduct currentCartItem: customerCart) {
-			System.out.println(wishlistProd);
+			System.out.println(currentCartItem.toString());
 		}
 	}
 	
 	public void payCart() {
+		AmazonCustomer selectedCustomer;
+		int creditIndex;
 		
+		selectedCustomer = requestCustomer();
+		creditIndex = Integer.valueOf(requestUserInput("Enter the number for the credit from the customer: ", "int"));
+		
+		selectedCustomer.pay(creditIndex);
 	}
 	
 	public void addCommentToProduct() {

@@ -136,29 +136,33 @@ public class AmazonCustomer {
 		return cart.getItems();
 	}
 	
-	public void pay(AmazonCredit payment) {
+	public void pay(int creditIndex) {
 		//TODO how should credits be handled?
 	}
 	
-	public void moveFromCartToComments(AmazonProduct desiredProduct) {
+	public void moveFromCartToComments(AmazonProduct desiredProduct) throws AmazonException{
 		for(AmazonProduct curProduct: cart.getItems()) {
-			if(curProduct == desiredProduct) {
-				
+			if(curProduct.equals(desiredProduct)) {
+				this.addComment(new AmazonComment(desiredProduct));
+				cart.removeItem(desiredProduct);
+				return;
 			}
 		}
+		
+		throw new AmazonException("Product not found in cart.");
 	}
 	
 	public boolean hasProductToComment(AmazonProduct desiredProduct) {
 		return cart.hasItem(desiredProduct);
 	}
 	
-	public void addComment(AmazonComment newComment) throws AmazonException {
+	public void addComment(AmazonComment newComment) {
 		comments.add(newComment);
 	}
 	
 	public void setComment(AmazonProduct desiredProduct, String comment, float rating) throws AmazonException{
 		for(AmazonComment curComment: comments) {
-			if(curComment.getProduct() == desiredProduct) {
+			if(curComment.getProduct().equals(desiredProduct)) {
 				if(!AmazonUtil.isValidString(comment) || !AmazonUtil.isValidFloat(String.valueOf(rating))) {
 					throw new AmazonException("Invalid argument passed for changing comment.");
 				}
@@ -176,7 +180,7 @@ public class AmazonCustomer {
 			commentStrings.add(curComment.toString());
 		}
 		
-		return (String[])commentStrings.toArray(); //casting to string from object
+		return (String[])commentStrings.toArray(); //casting to string array from object
 	}
 	
 	@Override
