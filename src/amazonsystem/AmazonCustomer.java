@@ -128,16 +128,24 @@ public class AmazonCustomer {
 		}
 	}
 	
-	public void showCart() { //outputs cart items
+	public void showCart() { // outputs cart items
 		cart.listItems();
 	}
 	
-	public ArrayList<AmazonProduct> getCart() { //returns cart items as amazonProduct
+	public ArrayList<AmazonProduct> getCart() { // returns cart items as amazonProduct
 		return cart.getItems();
 	}
 	
 	public void pay(int creditIndex) {
+<<<<<<< HEAD
 		//TODO how should credits be handled?
+=======
+		AmazonCredit creditInstance = credits.get(creditIndex);
+		
+		if (creditInstance.getAmount() >= cart.calcSubTotal()) {
+			creditInstance.setAmount(creditInstance.getAmount() - cart.calcSubTotal());
+		}
+>>>>>>> refs/remotes/origin/master
 	}
 	
 	public void moveFromCartToComments(AmazonProduct desiredProduct) throws AmazonException{
