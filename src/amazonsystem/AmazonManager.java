@@ -311,7 +311,11 @@ public class AmazonManager {
 		selectedCustomer = requestCustomer();
 		creditIndex = Integer.valueOf(requestUserInput("Enter the number for the credit from the customer: ", "int"));
 		
-		selectedCustomer.pay(creditIndex);
+		try {
+			selectedCustomer.pay(creditIndex);
+		} catch (AmazonException e) {
+			System.out.println(e);
+		}
 	}
 	
 	public void addCommentToProduct() {
@@ -502,7 +506,7 @@ public class AmazonManager {
 				showProductsInCart();
 				break;
 			case("n"):
-				//buyProductsInCart();
+				payCart();
 				break;
 			case("o"):
 				addCommentToProduct();

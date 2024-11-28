@@ -136,16 +136,22 @@ public class AmazonCustomer {
 		return cart.getItems();
 	}
 	
-	public void pay(int creditIndex) {
-<<<<<<< HEAD
-		//TODO how should credits be handled?
-=======
+	public void pay(int creditIndex) throws AmazonException{
 		AmazonCredit creditInstance = credits.get(creditIndex);
 		
 		if (creditInstance.getAmount() >= cart.calcSubTotal()) {
 			creditInstance.setAmount(creditInstance.getAmount() - cart.calcSubTotal());
+			
+			for(AmazonProduct curProduct: cart.getItems()) {
+				try {
+					this.moveFromCartToComments(curProduct);
+				} catch (AmazonException e) {
+					e.printStackTrace();
+				}
+			}
+		} else {
+			throw new AmazonException("Insufficient funds.");
 		}
->>>>>>> refs/remotes/origin/master
 	}
 	
 	public void moveFromCartToComments(AmazonProduct desiredProduct) throws AmazonException{
