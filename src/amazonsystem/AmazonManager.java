@@ -15,10 +15,12 @@ public class AmazonManager {
 	
 	public static void main(String[] args) {
 		AmazonManager manager = new AmazonManager();
+		manager.showMenu();
 		while (manager.keepRunning == true) {
-			manager.showMenu();
+			
 			manager.requestUserCommand();
-			manager.awaitCustomerContinue();
+			System.out.println("===========================================================================");
+			//manager.awaitCustomerContinue();
 		}
 	}
 	
@@ -192,7 +194,7 @@ public class AmazonManager {
 		
 		for(int i = 0; i < customerCredits.size(); i++) {
 			AmazonCredit currentCredit = customerCredits.get(i);
-			System.out.printf("%n- Credit[%i]: %s", currentCredit.toString());
+			System.out.printf("- Credit[%d]: %s%n", i, currentCredit.toString());
 		}
 	}
 	
@@ -231,7 +233,7 @@ public class AmazonManager {
 			System.out.println(e);
 		}
 		
-		System.out.printf("Removed \"%s...\" from %s's wishlist.", productToRemove.getName().substring(0,25), selectedCustomer.getName());
+		System.out.printf("Removed \"%s...\" from %s's wishlist.%n", productToRemove.getName().substring(0,25), selectedCustomer.getName());
 	}
 	
 	public void showWishList() {
@@ -289,7 +291,17 @@ public class AmazonManager {
 	}
 	
 	public void showProductsInCart() {
+		AmazonCustomer selectedCustomer;
+		ArrayList<AmazonProduct> customerCart;
 		
+		selectedCustomer = requestCustomer();
+		
+		customerCart = selectedCustomer.getCart();
+		
+		System.out.printf("Cart of customer %s contains: %n", selectedCustomer.getName());
+		for(AmazonProduct currentCartItem: customerCart) {
+			System.out.println(wishlistProd);
+		}
 	}
 	
 	public void payCart() {
@@ -438,7 +450,7 @@ public class AmazonManager {
 		Scanner input = new Scanner(System.in);
 		String userOption;
 		
-		System.out.println("Choose an option: ");
+		System.out.println("Choose an option (\"menu\" to see options): ");
 		userOption = input.next();
 		
 		userOption = userOption.toLowerCase();
@@ -491,6 +503,12 @@ public class AmazonManager {
 				break;
 			case("p"):
 				showComments();
+				break;
+			case("q"):
+				exit();
+				break;
+			case("menu"):
+				showMenu();
 				break;
 		}
 	}

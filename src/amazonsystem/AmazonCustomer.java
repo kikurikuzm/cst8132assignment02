@@ -61,9 +61,7 @@ public class AmazonCustomer {
 	}
 	
 	public ArrayList<AmazonCredit> getCredits() {
-//		for(int i = 0; i < credits.size(); i++) {
-//			System.out.printf("- Credit[%i]: %s %n", i, credits.get(i).toString());
-//		}
+
 		return credits;
 	}
 	
@@ -142,8 +140,12 @@ public class AmazonCustomer {
 		//TODO how should credits be handled?
 	}
 	
-	public void moveFromCartToComments() {
-		//TODO idk
+	public void moveFromCartToComments(AmazonProduct desiredProduct) {
+		for(AmazonProduct curProduct: cart.getItems()) {
+			if(curProduct == desiredProduct) {
+				
+			}
+		}
 	}
 	
 	public boolean hasProductToComment(AmazonProduct desiredProduct) {
@@ -155,11 +157,26 @@ public class AmazonCustomer {
 	}
 	
 	public void setComment(AmazonProduct desiredProduct, String comment, float rating) throws AmazonException{
-		//TODO change customer's comment and rating about desiredProduct to comment and rating
+		for(AmazonComment curComment: comments) {
+			if(curComment.getProduct() == desiredProduct) {
+				if(!AmazonUtil.isValidString(comment) || !AmazonUtil.isValidFloat(String.valueOf(rating))) {
+					throw new AmazonException("Invalid argument passed for changing comment.");
+				}
+				curComment.setCommentDesc(comment);
+				curComment.setStarRating(rating);
+				break;
+			}
+		}
 	}
 	
-	public void showComments() {
-		//TODO list all comments
+	public String[] showComments() {
+		ArrayList<String> commentStrings = new ArrayList<String>();
+		
+		for(AmazonComment curComment: comments) {
+			commentStrings.add(curComment.toString());
+		}
+		
+		return (String[])commentStrings.toArray(); //casting to string from object
 	}
 	
 	@Override
