@@ -44,6 +44,54 @@ String imageURL, String link, float rating, int numberOfRatings, float discountP
 
 	}
 	
+	public static AmazonProduct createAmazonProduct(String[] var) {
+		if(var.length != 10) {
+			return null;
+		}
+		
+		if(AmazonUtil.isValidInt(var[0]) == false) {
+			return null;
+		}
+		
+		if(AmazonUtil.isValidString(var[1]) == false) {
+			return null;
+		}
+		
+		if(AmazonUtil.isValidString(var[2]) == false) {
+			return null;
+		}
+		
+		if(AmazonUtil.isValidString(var[3]) == false) {
+			return null;
+		}
+		
+		if(AmazonUtil.isValidString(var[4]) == false) {
+			return null;
+		}
+		
+		if(AmazonUtil.isValidString(var[5]) == false) {
+			return null;
+		}
+		
+		if(AmazonUtil.isValidFloat(var[6]) == false) {
+			return null;
+		}
+		
+		if(AmazonUtil.isValidInt(var[7]) == false) {
+			return null;
+		}
+		
+		if(AmazonUtil.isValidFloat(var[8]) == false) {
+			return null;
+		}
+		
+		if(AmazonUtil.isValidFloat(var[9]) == false) {
+			return null;
+		} else {
+			return new AmazonProduct(var);
+		}
+	}
+	
 	public float getActualPrice() {
 		return this.actualPrice;
 	}

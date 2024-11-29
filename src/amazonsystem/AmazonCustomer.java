@@ -24,28 +24,28 @@ public class AmazonCustomer {
 		this.cart = new AmazonCart();
 	}
 	
-	public static AmazonCustomer createAmazonCustomer(String[] newCustomer) throws AmazonException{
+	public static AmazonCustomer createAmazonCustomer(String[] newCustomer) {
 		if(newCustomer.length != 3) {
-			throw new AmazonException("Invalid length of String list. Should have only three indices.");
+			return null;
 		}
 		
 		if(AmazonUtil.isValidInt(newCustomer[0]) == false) {
-			throw new AmazonException("Invalid int given for ID.");
+			return null;
 		}
 		
 		if(AmazonUtil.isValidString(newCustomer[1]) == false) {
-			throw new AmazonException("Invalid sting given for name.");
+			return null;
 		}
 		
 		if(AmazonUtil.isValidString(newCustomer[2]) == false) {
-			throw new AmazonException("Invalid string given for address.");
+			return null;
+		} else {
+			int newID = Integer.valueOf(newCustomer[0]);
+			String newName = newCustomer[1];
+			String newAddress = newCustomer[2];
+			
+			return new AmazonCustomer(newID, newName, newAddress);
 		}
-		
-		int newID = Integer.valueOf(newCustomer[0]);
-		String newName = newCustomer[1];
-		String newAddress = newCustomer[2];
-		
-		return new AmazonCustomer(newID, newName, newAddress);
 	}
 	
 	public int getID() {
@@ -138,6 +138,10 @@ public class AmazonCustomer {
 	
 	public ArrayList<AmazonProduct> getCart() { // returns cart items as amazonProduct
 		return cart.getItems();
+	}
+	
+	public int getCartSize () {
+		return cart.getItems().size();
 	}
 	
 	public void pay(int creditIndex) throws AmazonException{
