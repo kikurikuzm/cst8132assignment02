@@ -65,6 +65,10 @@ public class AmazonCustomer {
 		return credits;
 	}
 	
+	public ArrayList<AmazonComment> getCustomerComments() {
+		return comments;
+	}
+	
 	public void addCredit(AmazonCredit newCredit) {
 		this.credits.add(newCredit);
 	}

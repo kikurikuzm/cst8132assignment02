@@ -332,12 +332,19 @@ public class AmazonManager {
 		newComment.setCommentDesc(requestUserInput("Enter the comment: ","string"));
 		newComment.setStarRating(Integer.parseInt(requestUserInput("Enter the star rating: ","stars")));
 		
+		selectedCustomer.addComment(newComment);
+		
 		System.out.println("Comment from customer: " + selectedCustomer);
 		System.out.printf("%.1f stars -- \"%s\"\n", newComment.getStarRating(), newComment.getCommentDesc());
 	}
 	
 	public void showComments() {
+		AmazonCustomer selectedCustomer;
+		selectedCustomer = requestCustomer();
 		
+		for (AmazonComment i : selectedCustomer.getCustomerComments()) {
+			System.out.println(i.toString());
+		}
 	}
 
 	
