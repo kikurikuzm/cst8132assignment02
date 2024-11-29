@@ -23,11 +23,11 @@ public class AmazonComment {
 		return comment;
 	}
 	
-	public void setStarRating(float stars) {
+	public void setRating(float stars) {
 		this.stars = stars;
 	}
 	
-	public void setCommentDesc(String desc) {
+	public void setComment(String desc) {
 		this.comment = desc;
 	}
 	

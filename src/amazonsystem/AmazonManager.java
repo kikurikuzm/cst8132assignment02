@@ -329,8 +329,8 @@ public class AmazonManager {
 		
 		System.out.println("Commenting on product: " + desiredProduct.toString());
 		
-		newComment.setCommentDesc(requestUserInput("Enter the comment: ","string"));
-		newComment.setStarRating(Integer.parseInt(requestUserInput("Enter the star rating: ","stars")));
+		newComment.setComment(requestUserInput("Enter the comment: ","string"));
+		newComment.setRating(Integer.parseInt(requestUserInput("Enter the star rating: ","stars")));
 		
 		selectedCustomer.addComment(newComment);
 		

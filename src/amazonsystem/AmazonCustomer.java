@@ -61,12 +61,19 @@ public class AmazonCustomer {
 	}
 	
 	public ArrayList<AmazonCredit> getCredits() {
-
 		return credits;
+	}
+	
+	public int getNumberOfCredits() {
+		return credits.size();
 	}
 	
 	public ArrayList<AmazonComment> getCustomerComments() {
 		return comments;
+	}
+	
+	public int getNumberOfComments() {
+		return comments.size();
 	}
 	
 	public void addCredit(AmazonCredit newCredit) {
@@ -188,8 +195,8 @@ public class AmazonCustomer {
 				if(!AmazonUtil.isValidString(comment) || !AmazonUtil.isValidFloat(String.valueOf(rating))) {
 					throw new AmazonException("Invalid argument passed for changing comment.");
 				}
-				curComment.setCommentDesc(comment);
-				curComment.setStarRating(rating);
+				curComment.setComment(comment);
+				curComment.setRating(rating);
 				break;
 			}
 		}

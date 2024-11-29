@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import amazonsystem.*;
-import amazonsystem.AmazonMoney.*;
 import amazonsystem.AmazonProduct.*;
 
 @TestMethodOrder(OrderAnnotation.class)

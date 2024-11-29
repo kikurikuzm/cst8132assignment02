@@ -7,6 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
+import amazonsystem.*;
+import amazonsystem.AmazonMoney.*;
+import amazonsystem.AmazonProduct.*;
+
+
 @TestMethodOrder(OrderAnnotation.class)
 class TestCredits {
 

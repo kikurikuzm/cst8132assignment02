@@ -106,14 +106,18 @@ public class AmazonUtil {
 	}
 	
 	public static boolean isValidFloat(String checkingFloat) {
-		float convertedFloat = Float.valueOf(checkingFloat);
-		
-		if(convertedFloat >= 0) {
-			return true;
-		} else if(convertedFloat < 0) {
+		if (!isValidString(checkingFloat)) {
 			return false;
 		} else {
-			return false;
+			float convertedFloat = Float.valueOf(checkingFloat);
+			
+			if(convertedFloat >= 0) {
+				return true;
+			} else if(convertedFloat < 0) {
+				return false;
+			} else {
+				return false;
+			}
 		}
 	}
 	
