@@ -218,4 +218,8 @@ public class AmazonCustomer {
 		
 		return customerSignature;
 	}
+
+	public int getWishlistSize() {
+		return wishlist.size();
+	}
 }
