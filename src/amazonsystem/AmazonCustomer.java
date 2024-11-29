@@ -199,6 +199,8 @@ public class AmazonCustomer {
 	
 	@Override
 	public String toString() {
-		return new String();//placeholder
+		String customerSignature = "["+id+"] " + "["+name+"] " + "["+address+"]";
+		
+		return customerSignature;
 	}
 }

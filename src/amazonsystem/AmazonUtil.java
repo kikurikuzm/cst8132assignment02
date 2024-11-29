@@ -135,7 +135,7 @@ public class AmazonUtil {
 	}
 	
 	public static boolean isValidInt(String checkingInt, int integer1, int integer2) {//not sure what the two extra integers are for...
-		return false; //placeholder
+		return false; //placehol
 	}
 	
 	public static boolean isValidString(String checkingString) {

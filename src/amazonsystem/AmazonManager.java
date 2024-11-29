@@ -319,7 +319,21 @@ public class AmazonManager {
 	}
 	
 	public void addCommentToProduct() {
+		AmazonCustomer selectedCustomer;
+		AmazonProduct desiredProduct;
 		
+		selectedCustomer = requestCustomer();
+		
+		desiredProduct = getProductIfValid(requestUserInput("Enter the product ID to comment on: ", "product"));
+		AmazonComment newComment = new AmazonComment(desiredProduct);
+		
+		System.out.println("Commenting on product: " + desiredProduct.toString());
+		
+		newComment.setCommentDesc(requestUserInput("Enter the comment: ","string"));
+		newComment.setStarRating(Integer.parseInt(requestUserInput("Enter the star rating: ","stars")));
+		
+		System.out.println("Comment from customer: " + selectedCustomer);
+		System.out.printf("%.1f stars -- \"%s\"\n", newComment.getStarRating(), newComment.getCommentDesc());
 	}
 	
 	public void showComments() {
@@ -441,6 +455,14 @@ public class AmazonManager {
 						responseInvalid = false;
 					} else {
 						System.out.println("Invalid float.");
+					}
+					break;
+				case("stars"):
+					if(AmazonUtil.isValidInt(userResponse) == true) {
+						if (Integer.parseInt(userResponse) > 0 && Integer.parseInt(userResponse) <= 5)
+						responseInvalid = false;
+					} else {
+						System.out.println("Invalid star rating.");
 					}
 					break;
 				default:
